@@ -850,6 +850,16 @@ class BitcoinSegwitTestnet(BitcoinTestnetMixin, Coin):
                     '<br/><br/>')
         return False
 
+class BitcoinSegwitSimnet(BitcoinSegwitTestnet):
+    NAME = "BitcoinSegwit"
+    NET = "simnet"
+    # Copied from the btcd simnet source:
+    # https://sourcegraph.com/github.com/btcsuite/btcd@master/-/blob/chaincfg/genesis.go#L148:5
+    # Note that the endianness is reversed.
+    GENESIS_HASH = ('683e86bd5c6d110d91b94b97137ba6bfe02dbbdb8e3dff722a669b5d69d77af6')
+    PEERS = []
+    TX_COUNT = 1
+    TX_COUNT_HEIGHT = 1
 
 class BitcoinSegwitRegtest(BitcoinSegwitTestnet):
     NAME = "BitcoinSegwit"
