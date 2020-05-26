@@ -181,19 +181,20 @@ class Daemon(object):
         The result will be an array of the same length as params_iterable.
         If replace_errs is true, any item with an error is returned as None,
         otherwise an exception is raised.'''
-        def processor(result):
-            errs = [item['error'] for item in result if item['error']]
-            if any(err.get('code') == self.WARMING_UP for err in errs):
-                raise WarmingUpError
-            if not errs or replace_errs:
-                return [item['result'] for item in result]
-            raise DaemonError(errs)
+        # def processor(result):
+        #     errs = [item['error'] for item in result if item['error']]
+        #     if any(err.get('code') == self.WARMING_UP for err in errs):
+        #         raise WarmingUpError
+        #     if not errs or replace_errs:
+        #         return [item['result'] for item in result]
+        #     raise DaemonError(errs)
 
-        payload = [{'method': method, 'params': p, 'id': next(self.id_counter)}
-                   for p in params_iterable]
-        if payload:
-            return await self._send(payload, processor)
-        return []
+        # payload = [{'method': method, 'params': p, 'id': next(self.id_counter)}
+        #            for p in params_iterable]
+        # if payload:
+        #     return await self._send(payload, processor)
+        # return []
+        return [await self._send_single(method, p) for p in params_iterable]
 
     async def _is_rpc_available(self, method):
         '''Return whether given RPC method is available in the daemon.
